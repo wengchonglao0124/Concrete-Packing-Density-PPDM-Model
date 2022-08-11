@@ -14,6 +14,11 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 # gravity value [m/s2]?
 gravity = 981
 
+# Big ball properties
+
+
+# Small ball properties
+
 
 def calculate_distance(p1, p2):
     return math.sqrt((p2[1] - p1[1])**2 + (p2[0] - p1[0])**2)
