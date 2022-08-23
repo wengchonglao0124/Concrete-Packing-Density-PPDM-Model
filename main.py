@@ -5,7 +5,7 @@ import pymunk
 import pymunk.pygame_util
 import math
 
-# ababdh
+# Big ball govern
 pygame.init()
 # window size
 WIDTH, HEIGHT = (pygame.display.Info().current_w*0.85, pygame.display.Info().current_h*0.85)
@@ -14,10 +14,31 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 # gravity value [m/s2]?
 gravity = 981
 
-# Big ball properties
+# Container properties
+container_width = WIDTH*0.4
+container_height = WIDTH*0.4
+container_thickness = 20
+container_elasticity = 0.9
+container_friction = 0.4
 
+# Big ball properties
+big_ball_size = (container_height/15)/2 #radius
+number_of_big_ball = 250
+big_ball_mass = 30
+big_ball_elasticity = 0
+big_ball_friction = 0
+big_ball_color = (24, 5, 63, 100)
 
 # Small ball properties
+small_ball_size = big_ball_size/10 #radius
+number_of_small_ball = 50
+small_ball_mass = 10
+small_ball_elasticity = 0
+small_ball_friction = 0
+small_ball_color = (54, 89, 122, 100)
+
+# Result properties
+decimal_places = 3
 
 
 def calculate_distance(p1, p2):
@@ -92,6 +113,31 @@ def random_generate_particles(space: pymunk.Space, generate_centre: tuple[float,
     return particle_list
 
 
+def generate_big_ball(space: pymunk.Space):
+    return random_generate_particles(space, (WIDTH/2, HEIGHT - 20 - container_thickness - container_height*0.5), container_width - 2*big_ball_size, container_height - 2*big_ball_size, number_of_big_ball, big_ball_size, big_ball_mass, big_ball_elasticity, big_ball_friction, big_ball_color)
+
+
+def generate_small_ball(space: pymunk.Space):
+    return random_generate_particles(space, (WIDTH/2, HEIGHT - 20 - container_thickness - container_height*0.5), container_width - 2*small_ball_size, container_height - 2*small_ball_size, number_of_small_ball, small_ball_size, small_ball_mass, small_ball_elasticity, small_ball_friction, small_ball_color)
+
+
+def remove_big_ball_for_fully_packed(space: pymunk.Space, big_ball_list: [pymunk.Circle]):
+    for particle in big_ball_list.copy():
+        if ((HEIGHT - 20 - container_height) - (particle.body.position.y - big_ball_size))/(HEIGHT - 20 - container_height) > 0.02:
+            space.remove(particle, particle.body)
+            big_ball_list.remove(particle)
+        elif particle.body.position.x - big_ball_size < (WIDTH-container_width)/2 or particle.body.position.x + big_ball_size > (WIDTH-container_width)/2 + container_width:
+            space.remove(particle, particle.body)
+            big_ball_list.remove(particle)
+
+
+def calculate_packing_density(ball_list: [pymunk.Circle]):
+    if len(ball_list) == 0:
+        return 0
+    else:
+        return (math.pi*(ball_list[0].radius**2))*len(ball_list)/((container_width-2*container_thickness)*(container_height-container_thickness))
+
+
 def execute(window: pygame.display, width: int, height: int):
     run = True
     clock = pygame.time.Clock()
@@ -105,12 +151,12 @@ def execute(window: pygame.display, width: int, height: int):
     # create the boundaries
     create_boundaries(space, width, height)
     # create the container
-    create_container(space, WIDTH*0.3, HEIGHT*0.3, 20, 0.9, 0.4)
+    create_container(space, container_width, container_height, container_thickness, container_elasticity, container_friction)
 
     draw_options = pymunk.pygame_util.DrawOptions(window)
 
-    particle1_list = []
-    particle2_list = random_generate_particles(space, (WIDTH/2, HEIGHT - 20 - 20 - HEIGHT*0.3*0.5), WIDTH*0.3, HEIGHT*0.3, 60, 20, 30, 0.8, 0.4, (24, 5, 63, 100))
+    small_ball_list = []
+    big_ball_list = []
     dragging = False
 
     while run:
@@ -121,18 +167,37 @@ def execute(window: pygame.display, width: int, height: int):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    pressed_pos = pygame.mouse.get_pos()
-                    particle1_list.extend(random_generate_particles(space, pressed_pos, WIDTH*0.3, HEIGHT*0.3, 150, 2, 10, 0.9, 0.4, (54, 89, 122, 100)))
+                    pass
+                    #pressed_pos = pygame.mouse.get_pos()
+                    #small_ball1_list.extend(random_generate_particles(space, pressed_pos, WIDTH*0.3, HEIGHT*0.3, 150, 2, 10, 0.9, 0.4, (54, 89, 122, 100)))
 
-            # reset
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.key.key_code("g"):
+                    small_ball_list = generate_small_ball(space)
+
+                # delete big balls which are out of the container
+                if event.key == pygame.key.key_code("d"):
+                    remove_big_ball_for_fully_packed(space, big_ball_list)
+
+                # reset all
                 if event.key == pygame.key.key_code("r"):
-                    for particle in particle1_list:
+                    for particle in small_ball_list:
                         space.remove(particle, particle.body)
-                    particle1_list = []
-                    for particle in particle2_list:
+                    small_ball_list = []
+                    for particle in big_ball_list:
                         space.remove(particle, particle.body)
-                    particle2_list = random_generate_particles(space, (WIDTH/2, HEIGHT - 20 - 20 - HEIGHT*0.3*0.5), WIDTH*0.3, HEIGHT*0.3, 60, 20, 30, 0.8, 0.4, (24, 5, 63, 100))
+                    big_ball_list = generate_big_ball(space)
+
+                # print result
+                if event.key == pygame.key.key_code("p"):
+                    print("Packing Density Report:")
+                    print("------------------------------------")
+                    print("Packing density of big ball: " + str(round((calculate_packing_density(big_ball_list))*(10**decimal_places))/(10**decimal_places)))
+                    print("------------------------------------")
+                    print("Packing density of small ball: " + str(round((calculate_packing_density(small_ball_list))*(10**decimal_places))/(10**decimal_places)))
+                    print("")
+                    print("")
+
 
         draw(space, window, draw_options)
         space.step(dt)
