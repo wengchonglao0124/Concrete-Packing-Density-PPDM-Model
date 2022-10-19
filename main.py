@@ -451,8 +451,8 @@ def execute(window: pygame.display, width: int, height: int):
                         space.remove(particle, particle.body)
                     big_ball_list = []
 
-                    # step = 50
-                    number_of_small_ball -= 50
+                    # step = 25
+                    number_of_small_ball -= 25
 
                     status = Status.START
                     iteration = 1
