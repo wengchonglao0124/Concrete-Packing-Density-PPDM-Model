@@ -79,6 +79,7 @@ decimal_places = 3
 
 # Experiment properties
 number_of_experiment = 2
+auto_experiment = False
 
 class Status(Enum):
     EMPTY = -1
@@ -105,12 +106,14 @@ def start_the_experiment():
     global number_of_small_ball
     global number_of_big_ball
     global number_of_experiment
+    global auto_experiment
 
     bigBall_container = bigBall_container_property.get_value()[0][1]
     smallBall_bigBall = smallBall_bigBall_property.get_value()[0][1]
     number_of_small_ball = round(number_of_small_ball_property.get_value())
     number_of_big_ball = round(number_of_big_ball_property.get_value())
     number_of_experiment = round(number_of_experiment_property.get_value())
+    auto_experiment = auto_experiment_property.get_value()
     execute(window, WIDTH, HEIGHT)
 
 # menu setup
@@ -123,12 +126,12 @@ smallBall_bigBall_property = menu.add.dropselect("BigBall : SmallBall", [("1:1",
 
 menu.add.label(" ")
 menu.add.label("Amount Properties:")
+auto_experiment_property = menu.add.toggle_switch("Auto Experiments (from 0 to selected no. of small ball):")
 number_of_small_ball_property = menu.add.range_slider("Number of Small Ball:", 1000, [0, 1700], increment=100)
 number_of_big_ball_property = menu.add.range_slider("Number of Big Ball:", 100, [50, 100], increment=10)
 
-menu.add.label(" ")
 number_of_experiment_property = menu.add.range_slider("Number of Experiment:", 2, [1, 60], increment=1)
-menu.add.button('Start Experiment', start_the_experiment)
+menu.add.button('"Start Experiment"', start_the_experiment)
 
 
 def calculate_distance(p1, p2):
@@ -272,14 +275,15 @@ def remove_big_ball_for_fully_packed(space: pymunk.Space, ball_list: [pymunk.Cir
 
 
 def remove_small_ball_for_fully_packed(space: pymunk.Space, ball_list: [pymunk.Circle]):
-    ball_size = ball_list[0].radius
-    for particle in ball_list.copy():
-        if ((HEIGHT - 20 - container_height) - (particle.body.position.y - ball_size))/(HEIGHT - 20 - container_height) > 0.001:
-            space.remove(particle, particle.body)
-            ball_list.remove(particle)
-        elif particle.body.position.x - ball_size < (WIDTH-container_width)/2 or particle.body.position.x + ball_size > (WIDTH-container_width)/2 + container_width:
-            space.remove(particle, particle.body)
-            ball_list.remove(particle)
+    if len(ball_list) > 0:
+        ball_size = ball_list[0].radius
+        for particle in ball_list.copy():
+            if ((HEIGHT - 20 - container_height) - (particle.body.position.y - ball_size))/(HEIGHT - 20 - container_height) > 0.001:
+                space.remove(particle, particle.body)
+                ball_list.remove(particle)
+            elif particle.body.position.x - ball_size < (WIDTH-container_width)/2 or particle.body.position.x + ball_size > (WIDTH-container_width)/2 + container_width:
+                space.remove(particle, particle.body)
+                ball_list.remove(particle)
 
 
 def calculate_packing_density(ball_list: [pymunk.Circle]):
@@ -433,20 +437,42 @@ def execute(window: pygame.display, width: int, height: int):
                 iteration += 1
                 timer = pyTime.get_ticks()
                 big_ball_list = generate_big_ball(space, 1)
+
             else:
-                # need to be reset
-                status = Status.EMPTY
-                iteration = 0
+                global number_of_small_ball
+                if auto_experiment and number_of_small_ball > 0:
+                    create_wall(space, container_width, container_height, container_thickness, container_elasticity, container_friction)
+                    space.remove(cover)
 
-                with open('results.csv', 'w') as f:
-                    writer = csv.writer(f)
-                    # write the header
-                    writer.writerow(resultX)
-                    # write the data
-                    writer.writerow(resultY)
+                    for particle in small_ball_list:
+                        space.remove(particle, particle.body)
+                    small_ball_list = []
+                    for particle in big_ball_list:
+                        space.remove(particle, particle.body)
+                    big_ball_list = []
 
-                #plt.scatter(resultX, resultY)
-                #plt.show()
+                    # step = 50
+                    number_of_small_ball -= 50
+
+                    status = Status.START
+                    iteration = 1
+                    timer = pyTime.get_ticks()
+                    big_ball_list = generate_big_ball(space, 1)
+
+                else:
+                    # need to be reset
+                    status = Status.EMPTY
+                    iteration = 0
+
+                    with open('results.csv', 'w') as f:
+                        writer = csv.writer(f)
+                        # write the header
+                        writer.writerow(resultX)
+                        # write the data
+                        writer.writerow(resultY)
+
+                    #plt.scatter(resultX, resultY)
+                    #plt.show()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
