@@ -35,9 +35,12 @@ durability and workability of the concrete member directly, which cannot be achi
 
 
 ## Visuals
-### Comprehensive Procedures:
-<br/>
 
+### Video Demonstration
+https://github.com/wengchonglao0124/Concrete-Packing-Density-PPDM-Model/assets/85862169/78188dbf-bd75-4743-84b2-b67d1cc92f2c
+
+
+### Comprehensive Procedure
 Menu control section for user's input
 <img width="1526" alt="Screenshot 2022-11-04 at 1 10 50 am" src="https://github.com/wengchonglao0124/Concrete-Packing-Density-PPDM-Model/assets/85862169/5e39a9e2-5414-4f09-b8e2-437784adac92">
 
