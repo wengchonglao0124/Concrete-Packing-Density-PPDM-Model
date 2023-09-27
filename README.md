@@ -99,3 +99,5 @@ Big Particle Dominated Case
 <br/>
 Thesis Report:
 https://drive.google.com/file/d/1kYt8tZzQzIIAhf1cOUQxt3hvW-5Hmh5T/view
+
+3D Model MPDM: https://github.com/wengchonglao0124/Concrete-Packing-Density-MPDM-Model.git
