@@ -95,3 +95,7 @@ CIVL4584 2022 Semester 2
 Concrete Packing Density Experiment
 
 Big Particle Dominated Case
+
+<br/>
+Thesis Report:
+https://drive.google.com/file/d/1kYt8tZzQzIIAhf1cOUQxt3hvW-5Hmh5T/view
