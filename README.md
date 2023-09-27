@@ -2,11 +2,6 @@
 
 This project is my individual project that is developed for my thesis project in my civil engineering degree.
 
-This project aims to develop a 2D dry binary packing model for spheres in order to study for
-the loosening, wedging and wall effects. Computational model for these experiments are developed and conducted to
-understand the effect that packing density of the binary particles is depended on the size and
-volume ratios of the particles in random packing.
-
 Pygame Packing Density Model (PPDM) is a 2D computational model with a binary mixture of the larger grains and smaller grains,
 it is a model for predicting the packing density in random particle packing.
 The PPDM implements the game engine called Pygame in Python programming language,
@@ -28,6 +23,11 @@ they are design for the larger grains dominated situation:
 
 
 # Usage
+
+This project aims to develop a 2D dry binary packing model for spheres in order to study for
+the loosening, wedging and wall effects. Computational model for these experiments are developed and conducted to
+understand the effect that packing density of the binary particles is depended on the size and
+volume ratios of the particles in random packing.
 
 A great understanding and knowledge of the particle packing is important and
 useful to the concrete industries. A good packing of concrete ingredients can improve the strength,
