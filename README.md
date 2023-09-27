@@ -22,7 +22,7 @@ they are design for the larger grains dominated situation:
 (6) Elimination2; (7) Generate smaller grains to fill for fully packed; (8) Elimination3; (9) Measurement; (10) End.
 
 
-# Usage
+## Usage
 
 This project aims to develop a 2D dry binary packing model for spheres in order to study for
 the loosening, wedging and wall effects. Computational model for these experiments are developed and conducted to
@@ -34,4 +34,22 @@ useful to the concrete industries. A good packing of concrete ingredients can im
 durability and workability of the concrete member directly, which cannot be achieved by purely adjusting the water and cement ratio.
 
 
-# About The Project
+## Visuals
+
+
+
+## License
+Developer: Weng Chong LAO
+
+Project Information:
+Name: Pygame Packing Density Model (PPDM)
+
+The University of Queensland
+Faculty of Engineering, Architecture and Information Technology
+Bachelor of Engineering (Honours)
+Civil Engineering
+
+Thesis Project
+CIVL4584 2022 Semester 2
+Concrete Packing Density Experiment
+Big Particle Dominated Case
