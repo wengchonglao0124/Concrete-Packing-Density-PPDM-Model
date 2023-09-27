@@ -18,7 +18,7 @@ After a mixing process (vibration) and particle settlement, the packing density 
 number of larger grains and number of smaller grains can be measured as well as
 the volumetric fractions of either the larger grains or the smaller grains.
 
-<img width="1526" alt="Screenshot 2022-11-04 at 2 35 01 pm" src="https://github.com/wengchonglao0124/Concrete-Packing-Density-PPDM-Model/assets/85862169/544dd22f-5358-46d2-adad-a18203593b26">
+<img width="1526" alt="Screenshot 2022-11-04 at 1 11 47 am" src="https://github.com/wengchonglao0124/Concrete-Packing-Density-PPDM-Model/assets/85862169/d6076c68-6650-4996-8644-26cb2b042ed7">
 
 The PPDM has a systematic procedure to predict the packing density of the random particle packing.
 There are ten different statuses used to define and control the process of the PPDM,
