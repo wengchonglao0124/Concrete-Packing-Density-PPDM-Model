@@ -41,8 +41,9 @@ durability and workability of the concrete member directly, which cannot be achi
 ## License
 Developer: Weng Chong LAO
 
-Name: Pygame Packing Density Model (PPDM)
+Project Name: Pygame Packing Density Model (PPDM)
 
+<br/>
 The University of Queensland
 
 Faculty of Engineering, Architecture and Information Technology
@@ -51,7 +52,7 @@ Bachelor of Engineering (Honours)
 
 Civil Engineering
 
-
+<br/>
 Thesis Project
 
 CIVL4584 2022 Semester 2
@@ -59,4 +60,3 @@ CIVL4584 2022 Semester 2
 Concrete Packing Density Experiment
 
 Big Particle Dominated Case
-
